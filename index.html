@@ -132,6 +132,13 @@ header{position:sticky;top:0;z-index:50;background:rgba(13,17,23,.92);
 .stg{display:inline-block;font-size:10px;font-weight:700;border-radius:6px;padding:2px 7px;
   border:1px solid var(--line);color:var(--dim2);margin-left:6px}
 .stg.ok{color:var(--acc);border-color:#1d3d31}
+.repRow{display:flex;align-items:center;gap:9px;margin-top:12px;border-top:1px solid var(--line);padding-top:12px}
+.repBtn{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:600;background:var(--bg2);
+  border:1px solid var(--line);border-radius:9px;padding:7px 11px;color:var(--acc)}
+.repBtn:active{background:var(--card2)}
+.repCount{background:var(--acc);color:#0a1210;font-size:11px;font-weight:800;border-radius:8px;
+  padding:1px 7px;min-width:9px;text-align:center}
+.repUndo{font-size:11.5px;color:var(--dim2);text-decoration:underline;padding:6px 2px}
 
 /* session */
 .sess{padding:10px 0 20px;min-height:calc(100vh - 200px);display:flex;flex-direction:column}
@@ -266,16 +273,18 @@ header{position:sticky;top:0;z-index:50;background:rgba(13,17,23,.92);
 let AYAT=[], SCIENCES={}, MISSION={}, TIERNAMES={};
 
 /* ---------------- state ---------------- */
-const LSP='mrj.v1', LSS='mrj.set.v3', LSB='mrj.bm.v1', LSH='mrj.hifdh.v1';
+const LSP='mrj.v1', LSS='mrj.set.v3', LSB='mrj.bm.v1', LSH='mrj.hifdh.v1', LSR='mrj.rep.v1';
 let P = JSON.parse(localStorage.getItem(LSP)||'{}');          // SRS for murajaah
 let H = JSON.parse(localStorage.getItem(LSH)||'{}');          // hifdh stage 0..4
 let S = Object.assign({size:26,font:'naskh',blank:2,shuf:false,taf:false},
                       JSON.parse(localStorage.getItem(LSS)||'{}'));
 let BM= JSON.parse(localStorage.getItem(LSB)||'[]');
+let RC= JSON.parse(localStorage.getItem(LSR)||'{}');          // manual recitation tally
 const sP=()=>localStorage.setItem(LSP,JSON.stringify(P));
 const sH=()=>localStorage.setItem(LSH,JSON.stringify(H));
 const sS=()=>localStorage.setItem(LSS,JSON.stringify(S));
 const sB=()=>localStorage.setItem(LSB,JSON.stringify(BM));
+const sR=()=>localStorage.setItem(LSR,JSON.stringify(RC));
 
 const FONTS={naskh:"'Noto Naskh Arabic','Scheherazade New',serif",
              sch:"'Scheherazade New','Noto Naskh Arabic',serif",
@@ -333,7 +342,7 @@ function notesHTML(a){
     ${had?`<div class="taf hd${on}" id="had-${a.id}"><div class="hbox">${had}</div></div>`:''}`;
 }
 function cardHTML(a,showSci){
-  const st=stage(a.id);
+  const st=stage(a.id), reps=RC[a.id]||0;
   return `<div class="card">
     <div class="toprow"><div style="flex:1">
       ${showSci?`<div class="tag" style="color:${SCIENCES[a.sci].c}">${esc(SCIENCES[a.sci].name)} · ${esc(a.topic)}</div>`:''}
@@ -344,7 +353,11 @@ function cardHTML(a,showSci){
     <div class="ar">${a.ar}</div>
     <div class="ref">${esc(a.ref)}</div>
     <div class="en">${esc(a.en)}</div>
-    ${notesHTML(a)}</div>`;
+    ${notesHTML(a)}
+    <div class="repRow">
+      <button class="repBtn" data-rep="${a.id}">↻ Recited<span class="repCount">${reps}</span></button>
+      ${reps?`<button class="repUndo" data-repundo="${a.id}">undo</button>`:''}
+    </div></div>`;
 }
 function bindCards(){
   el.querySelectorAll('[data-taf]').forEach(b=>b.onclick=()=>{
@@ -358,6 +371,23 @@ function bindCards(){
     if(i<0)BM.push(id); else BM.splice(i,1); sB();
     b.classList.toggle('on',i<0); b.textContent=i<0?'★':'☆'});
   el.querySelectorAll('.blank').forEach(b=>b.onclick=()=>b.classList.add('rev'));
+  el.querySelectorAll('[data-rep]').forEach(b=>b.onclick=()=>{
+    const id=b.dataset.rep, row=b.closest('.repRow');
+    RC[id]=(RC[id]||0)+1; sR();
+    row.querySelector('.repCount').textContent=RC[id];
+    if(!row.querySelector('[data-repundo]')){
+      const u=document.createElement('button'); u.className='repUndo'; u.dataset.repundo=id; u.textContent='undo';
+      row.appendChild(u); bindRepUndo(u);
+    }});
+  el.querySelectorAll('[data-repundo]').forEach(bindRepUndo);
+}
+function bindRepUndo(b){
+  b.onclick=()=>{
+    const id=b.dataset.repundo, row=b.closest('.repRow');
+    RC[id]=Math.max(0,(RC[id]||0)-1); sR();
+    row.querySelector('.repCount').textContent=RC[id];
+    if(!RC[id]) b.remove();
+  };
 }
 
 /* ---------------- render ---------------- */

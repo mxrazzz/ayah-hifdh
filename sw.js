@@ -1,6 +1,6 @@
 /* Network-first for the app itself so a push to GitHub Pages shows up
    immediately; cache is only the offline fallback. */
-const CACHE = 'murajaah-v5';
+const CACHE = 'murajaah-v6';
 const ASSETS = ['./', './index.html', './data.enc', './manifest.json'];
 
 self.addEventListener('install', e => {
