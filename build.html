@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rebuild data.enc</title>
+<style>
+:root{--bg:#0d1117;--card:#161d26;--line:#232c38;--txt:#e6edf3;--dim:#8b98a8;--dim2:#5d6b7d;
+ --acc:#37b98a;--red:#e2686a;--gold:#d8a657}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,sans-serif;padding:28px 16px}
+.w{max-width:620px;margin:0 auto}
+h1{font-size:22px;margin:0 0 4px;letter-spacing:-.4px}
+.sub{color:var(--dim);font-size:13.5px;margin:0 0 24px}
+.step{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:12px}
+.step b{display:block;font-size:13px;color:var(--acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:9px}
+input[type=password],input[type=text]{width:100%;background:#0f151d;border:1px solid var(--line);
+ border-radius:10px;padding:12px;color:var(--txt);font:inherit;outline:none}
+input:focus{border-color:var(--acc)}
+input[type=file]{color:var(--dim);font-size:13px}
+button{background:var(--acc);color:#04150e;border:none;border-radius:11px;padding:14px;
+ font:600 15px inherit;width:100%;cursor:pointer;margin-top:14px}
+button:disabled{opacity:.4;cursor:default}
+.log{font:12.5px/1.7 ui-monospace,Menlo,Consolas,monospace;white-space:pre-wrap;word-break:break-word;
+ background:#0f151d;border:1px solid var(--line);border-radius:10px;padding:12px;margin-top:14px;color:var(--dim)}
+.ok{color:var(--acc)} .err{color:var(--red)} .warn{color:var(--gold)}
+.note{color:var(--dim2);font-size:12.5px;margin-top:20px;line-height:1.7}
+code{background:var(--card);padding:1px 5px;border-radius:4px}
+</style></head><body><div class="w">
+<h1>Rebuild <code>data.enc</code></h1>
+<p class="sub">Use this whenever you add ayāt or change the password. Everything happens in this browser — nothing is uploaded.</p>
+
+<div class="step"><b>1 · Pick your ayat.js</b>
+  <input type="file" id="f" accept=".js,.json,.txt">
+</div>
+<div class="step"><b>2 · Password</b>
+  <input type="password" id="p1" placeholder="password" autocomplete="new-password">
+  <div style="height:9px"></div>
+  <input type="password" id="p2" placeholder="confirm password" autocomplete="new-password">
+</div>
+<button id="go" disabled>Encrypt &amp; download data.enc</button>
+<div class="log" id="log">Waiting for a file…</div>
+
+<p class="note">Then upload the new <code>data.enc</code> to your GitHub repo (drag it in, Commit changes). GitHub Pages redeploys itself within about a minute.<br><br>
+Keep <code>ayat.js</code> on your computer — it is the readable source. The <code>.gitignore</code> keeps it out of the public repo. If you lose it and forget the password, the data cannot be recovered.</p>
+
+<script>
+const KDF_ITER=310000;
+const $=id=>document.getElementById(id);
+let src=null;
+const log=(m,c='')=>{$('log').innerHTML+=(c?`<span class="${c}">${m}</span>`:m)+'\n'};
+const clear=()=>{$('log').innerHTML=''};
+const check=()=>{$('go').disabled=!(src&&$('p1').value&&$('p1').value===$('p2').value)};
+
+$('f').onchange=e=>{
+  const file=e.target.files[0]; if(!file)return;
+  const r=new FileReader();
+  r.onload=()=>{
+    clear();
+    try{
+      const fn=new Function(r.result+'\n;return {SCIENCES,MISSION,TIERNAMES,AYAT};');
+      const d=fn();
+      const ids=new Set(); const bad=[];
+      d.AYAT.forEach(a=>{
+        if(ids.has(a.id))bad.push('duplicate id: '+a.id); ids.add(a.id);
+        ['id','sci','topic','q','ref','key','ar','en','t','tier'].forEach(k=>{
+          if(!a[k])bad.push(a.id+' is missing "'+k+'"')});
+        if(!d.SCIENCES[a.sci])bad.push(a.id+' has unknown science "'+a.sci+'"');
+        if(!/^\d+:\d+$/.test(a.key||''))bad.push(a.id+' has a bad verse key');
+        if(!/[؀-ۿ]/.test(a.ar||''))bad.push(a.id+' has no Arabic');
+      });
+      Object.keys(d.MISSION||{}).forEach(k=>d.MISSION[k].ids.forEach(i=>{
+        if(!ids.has(i))bad.push('mission pack "'+k+'" points at a missing id: '+i)}));
+      if(bad.length){ log('✗ '+bad.length+' problem(s) — fix these first:','err');
+        bad.slice(0,25).forEach(b=>log('   '+b,'err'));
+        if(bad.length>25)log('   …and '+(bad.length-25)+' more','err');
+        src=null; check(); return; }
+      src=JSON.stringify(d);
+      log('✓ file parsed and validated','ok');
+      log('  '+d.AYAT.length+' ayāt · '+Object.keys(d.SCIENCES).length+' sciences · '
+          +Object.keys(d.MISSION).length+' mission packs');
+      log('  '+d.AYAT.filter(a=>a.tier===1).length+' Asās · '+d.AYAT.filter(a=>a.tier===2).length+' Bināʾ');
+      log('  '+d.AYAT.filter(a=>a.h&&a.h.length).length+' cards carry a ḥadīth');
+    }catch(err){ log('✗ could not read that file: '+err.message,'err'); src=null; }
+    check();
+  };
+  r.readAsText(file);
+};
+$('p1').oninput=$('p2').oninput=check;
+
+$('go').onclick=async()=>{
+  $('go').disabled=true; $('go').textContent='Encrypting…';
+  try{
+    const enc=new TextEncoder();
+    const salt=crypto.getRandomValues(new Uint8Array(16));
+    const iv  =crypto.getRandomValues(new Uint8Array(12));
+    const base=await crypto.subtle.importKey('raw',enc.encode($('p1').value),'PBKDF2',false,['deriveKey']);
+    const key =await crypto.subtle.deriveKey({name:'PBKDF2',salt,iterations:KDF_ITER,hash:'SHA-256'},
+                 base,{name:'AES-GCM',length:256},false,['encrypt','decrypt']);
+    const ct  =new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM',iv},key,enc.encode(src)));
+    const out =new Uint8Array(salt.length+iv.length+ct.length);
+    out.set(salt,0); out.set(iv,16); out.set(ct,28);
+    // verify before handing it over
+    const back=await crypto.subtle.decrypt({name:'AES-GCM',iv},key,ct);
+    const n=JSON.parse(new TextDecoder().decode(back)).AYAT.length;
+    let b=''; for(const x of out) b+=String.fromCharCode(x);
+    const blob=new Blob([btoa(b)],{type:'text/plain'});
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(blob); a.download='data.enc'; a.click();
+    log('✓ encrypted and verified — '+n+' ayāt decrypt cleanly','ok');
+    log('✓ data.enc downloaded. Upload it to your repo.','ok');
+  }catch(err){ log('✗ '+err.message,'err'); }
+  $('go').disabled=false; $('go').textContent='Encrypt & download data.enc';
+};
+</script></div></body></html>

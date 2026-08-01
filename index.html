@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0d1117">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Ḥifdh &amp; Murājaʿah — Ayah Proofs</title>
+<link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Scheherazade+New:wght@400;500;600&family=Amiri:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0d1117; --bg2:#151b23; --card:#161d26; --card2:#1c242f;
+  --line:#232c38; --txt:#e6edf3; --dim:#8b98a8; --dim2:#5d6b7d;
+  --acc:#37b98a; --acc2:#2a8f6a; --gold:#d8a657; --red:#e2686a; --blue:#6fa8dc;
+  --r:16px; --arsize:26px;
+  --arfont:'Noto Naskh Arabic','Scheherazade New',serif;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--txt);
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;overscroll-behavior-y:none}
+body{padding-bottom:calc(74px + env(safe-area-inset-bottom))}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+a{color:inherit}
+.wrap{max-width:700px;margin:0 auto;padding:0 14px}
+
+header{position:sticky;top:0;z-index:50;background:rgba(13,17,23,.92);
+  backdrop-filter:blur(14px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top)}
+.hbar{display:flex;align-items:center;gap:9px;height:54px}
+.htitle{font-size:16.5px;font-weight:700;letter-spacing:-.3px;flex:1;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.iconbtn{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;
+  background:var(--card);border:1px solid var(--line);font-size:15px;flex:none}
+.iconbtn:active{background:var(--card2)}
+.back{font-size:19px;line-height:1}
+
+/* bottom tabs */
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:60;display:flex;
+  background:rgba(13,17,23,.95);backdrop-filter:blur(16px);border-top:1px solid var(--line);
+  padding-bottom:env(safe-area-inset-bottom)}
+.tab{flex:1;padding:10px 4px 11px;display:flex;flex-direction:column;align-items:center;gap:3px;
+  color:var(--dim2);font-size:11px;font-weight:600;letter-spacing:.2px}
+.tab .ic{font-family:var(--arfont);font-size:19px;line-height:1.1}
+.tab.on{color:var(--acc)}
+.tab .badge{position:absolute;transform:translate(19px,-4px);background:var(--gold);color:#231a06;
+  font-size:9.5px;font-weight:800;border-radius:9px;padding:1px 5px;min-width:16px;text-align:center}
+
+.hero{padding:20px 0 4px}
+.hero h1{margin:0;font-size:25px;letter-spacing:-.7px;font-weight:700}
+.hero .harab{font-family:var(--arfont);direction:rtl;color:var(--acc);font-size:21px;margin-top:4px}
+.hero p{margin:9px 0 0;color:var(--dim);font-size:13.5px;line-height:1.55}
+
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:16px 0 6px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:11px 8px;text-align:center}
+.stat b{display:block;font-size:20px;font-weight:700;letter-spacing:-.5px}
+.stat span{font-size:10.5px;color:var(--dim2);text-transform:uppercase;letter-spacing:.6px}
+.stat.due b{color:var(--gold)} .stat.done b{color:var(--acc)} .stat.blue b{color:var(--blue)}
+
+.sectlabel{font-size:11px;letter-spacing:1.3px;text-transform:uppercase;
+  color:var(--dim2);margin:24px 0 10px;font-weight:600}
+.sectlabel span{text-transform:none;letter-spacing:0;font-weight:500;color:#485565}
+
+.bigbtn{display:block;width:100%;background:var(--acc);color:#04150e;font-weight:700;
+  font-size:15px;padding:15px;border-radius:14px;margin:6px 0 4px;letter-spacing:-.2px;text-align:center}
+.bigbtn:active{background:var(--acc2)}
+.bigbtn.sec{background:var(--card);color:var(--txt);border:1px solid var(--line)}
+.bigbtn.gold{background:var(--gold);color:#231a06}
+.bigbtn[disabled]{opacity:.4}
+
+/* pack cards */
+.pack{display:block;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);
+  border-radius:15px;padding:14px;margin-bottom:9px;position:relative;overflow:hidden}
+.pack:active{background:var(--card2)}
+.pack .pt{display:flex;align-items:center;gap:9px}
+.pack .dot{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;flex:none;
+  font-family:var(--arfont);font-size:13px;color:#06110d;font-weight:700}
+.pack b{font-size:14.5px;font-weight:650;letter-spacing:-.2px}
+.pack .n{margin-left:auto;font-size:11.5px;color:var(--dim2);font-weight:600;flex:none}
+.pack p{margin:8px 0 0;font-size:12.5px;color:var(--dim);line-height:1.5}
+.bar{height:5px;border-radius:5px;background:var(--line);margin-top:10px;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:5px;transition:width .3s}
+.pmeta{display:flex;justify-content:space-between;font-size:11px;color:var(--dim2);margin-top:6px;font-weight:600}
+
+.trow{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);
+  border-radius:13px;padding:13px 14px;margin-bottom:8px;width:100%;text-align:left}
+.trow:active{background:var(--card2)}
+.trow b{flex:1;font-size:14.5px;font-weight:500}
+.pill{font-size:11px;color:var(--dim2);background:var(--bg2);border:1px solid var(--line);
+  border-radius:20px;padding:3px 9px;font-weight:600}
+.pill.g{color:var(--gold);border-color:#3a3016}
+.pill.a{color:var(--acc);border-color:#1d3d31}
+.chev{color:var(--dim2);font-size:18px}
+
+.search{display:flex;align-items:center;gap:9px;background:var(--card);border:1px solid var(--line);
+  border-radius:13px;padding:11px 13px;margin:14px 0}
+.search input{flex:1;background:none;border:none;outline:none;color:var(--txt);font-size:15px;font-family:inherit}
+.search input::placeholder{color:var(--dim2)}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:11px}
+.q{font-size:14.5px;line-height:1.55;font-weight:500}
+.qlab{font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:var(--acc);font-weight:700;margin-bottom:7px}
+.ref{display:inline-block;font-size:11.5px;color:var(--gold);background:#241d0e;
+  border:1px solid #3a3016;border-radius:8px;padding:3px 9px;font-weight:600;margin-top:12px}
+.ar{font-family:var(--arfont);direction:rtl;text-align:right;font-size:var(--arsize);
+  line-height:2.05;margin:14px 0 0;color:#f2f7f4;
+  font-feature-settings:"dlig" 0,"clig" 0,"hlig" 0;font-variant-ligatures:no-discretionary-ligatures}
+.ar .blank{background:var(--card2);border-bottom:2px solid var(--acc2);border-radius:5px;
+  color:transparent;padding:0 4px;cursor:pointer;user-select:none}
+.ar .blank.rev{background:none;border-bottom-color:transparent;color:var(--acc)}
+.en{font-size:14px;line-height:1.65;color:var(--dim);margin-top:12px;border-top:1px solid var(--line);padding-top:12px}
+.btnrow{display:flex;gap:7px;margin-top:12px;flex-wrap:wrap}
+.tafbtn{font-size:12.5px;font-weight:600;background:var(--bg2);border:1px solid var(--line);
+  border-radius:9px;padding:7px 11px;color:var(--blue)}
+.tafbtn.hd{color:var(--acc)}
+.taf{margin-top:11px;border-top:1px solid var(--line);padding-top:11px;display:none}
+.taf.on{display:block}
+.tp{margin-bottom:11px;font-size:13px;line-height:1.6;color:#c3cedb}
+.tp:last-child{margin-bottom:0}
+.tp b{color:var(--gold);font-weight:600}
+.hd .tp b{color:var(--acc)}
+.hbox{border-left:2px solid var(--acc2);padding-left:11px}
+.tlink{display:inline-block;margin-top:5px;font-size:11.5px;color:var(--dim2);
+  text-decoration:none;border-bottom:1px dotted var(--dim2)}
+.toprow{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.star{font-size:17px;color:var(--dim2);flex:none;line-height:1}
+.star.on{color:var(--gold)}
+.tag{display:inline-block;font-size:10px;letter-spacing:.5px;text-transform:uppercase;
+  color:var(--dim2);font-weight:700;margin-bottom:6px}
+.stg{display:inline-block;font-size:10px;font-weight:700;border-radius:6px;padding:2px 7px;
+  border:1px solid var(--line);color:var(--dim2);margin-left:6px}
+.stg.ok{color:var(--acc);border-color:#1d3d31}
+
+/* session */
+.sess{padding:10px 0 20px;min-height:calc(100vh - 200px);display:flex;flex-direction:column}
+.prog{height:4px;background:var(--line);border-radius:4px;overflow:hidden;margin:6px 0 8px}
+.prog i{display:block;height:100%;background:var(--acc);transition:width .25s}
+.steps{display:flex;gap:5px;margin-bottom:14px}
+.steps div{flex:1;height:3px;border-radius:3px;background:var(--line)}
+.steps div.on{background:var(--acc)}
+.sesscard{flex:1;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px;
+  display:flex;flex-direction:column}
+.stagelab{font-size:10.5px;letter-spacing:1.4px;text-transform:uppercase;font-weight:800;color:var(--blue);margin-bottom:9px}
+.sessq{font-size:17px;line-height:1.55;font-weight:500}
+.hint{font-size:12.5px;color:var(--dim2);margin-top:12px;line-height:1.5;font-style:italic}
+.rate{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+.rate.two{grid-template-columns:repeat(2,1fr)}
+.rate button{padding:15px 6px;border-radius:13px;font-weight:700;font-size:13.5px;border:1px solid var(--line)}
+.r0{background:#2a1618;color:var(--red)} .r1{background:#1a2330;color:var(--blue)} .r2{background:#152a22;color:var(--acc)}
+.rate small{display:block;font-weight:500;font-size:10.5px;opacity:.65;margin-top:2px}
+.donebox{text-align:center;padding:50px 20px}
+.donebox .big{font-size:44px}
+.donebox h2{margin:12px 0 6px;font-size:20px}
+.donebox p{color:var(--dim);font-size:14px;margin:0 0 20px;line-height:1.6}
+
+/* quiz */
+.opts{display:flex;flex-direction:column;gap:9px;margin-top:16px}
+.opt2{text-align:left;background:var(--bg2);border:1px solid var(--line);border-radius:13px;
+  padding:14px;font-size:14px;line-height:1.5;font-weight:500}
+.opt2:active{background:var(--card2)}
+.opt2.right{background:#152a22;border-color:var(--acc2);color:#a9e8cd}
+.opt2.wrong{background:#2a1618;border-color:#5c2b2e;color:#f0b4b5}
+.opt2.dim{opacity:.45}
+.qref{font-family:var(--arfont);direction:rtl;font-size:15px}
+.scorebar{display:flex;gap:10px;font-size:12px;color:var(--dim2);font-weight:600;margin-bottom:8px}
+.scorebar b{color:var(--acc)} .scorebar i{color:var(--red);font-style:normal}
+
+/* sheet */
+.sheet{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.6);display:none}
+.sheet.on{display:block}
+.sheetin{position:absolute;left:0;right:0;bottom:0;background:var(--bg2);
+  border-radius:22px 22px 0 0;padding:8px 18px calc(24px + env(safe-area-inset-bottom));
+  border-top:1px solid var(--line);max-height:88vh;overflow:auto}
+.grab{width:38px;height:4px;border-radius:4px;background:var(--line);margin:6px auto 14px}
+.opt{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 0;border-bottom:1px solid var(--line)}
+.opt:last-of-type{border-bottom:none}
+.opt b{font-size:14.5px;font-weight:500}
+.opt small{display:block;color:var(--dim2);font-size:12px;margin-top:2px}
+.seg{display:flex;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;flex:none}
+.seg button{padding:8px 12px;font-size:13px;font-weight:600;color:var(--dim);white-space:nowrap}
+.seg button.on{background:var(--acc);color:#04150e}
+.switch{width:46px;height:27px;border-radius:20px;background:var(--line);position:relative;flex:none;transition:.15s}
+.switch i{position:absolute;top:3px;left:3px;width:21px;height:21px;border-radius:50%;background:#fff;transition:.15s}
+.switch.on{background:var(--acc)} .switch.on i{left:22px}
+.preview{font-family:var(--arfont);direction:rtl;text-align:right;font-size:var(--arsize);
+  line-height:2;padding:12px 0 4px;border-bottom:1px solid var(--line);font-feature-settings:"dlig" 0}
+.danger{color:var(--red);font-size:13.5px;font-weight:600;padding:14px 0 0}
+.empty{text-align:center;color:var(--dim2);padding:44px 18px;font-size:14px;line-height:1.6}
+.foot{color:var(--dim2);font-size:11.5px;line-height:1.6;padding:26px 0 20px;text-align:center}
+
+/* ---- auth gate ---- */
+#gate{position:fixed;inset:0;z-index:900;background:var(--bg);display:flex;
+  align-items:center;justify-content:center;padding:24px}
+#gate.hide{display:none}
+.gbox{width:100%;max-width:330px;text-align:center}
+.gbox .mark{font-family:var(--arfont);direction:rtl;font-size:40px;color:var(--acc);line-height:1.5}
+.gbox h2{margin:6px 0 4px;font-size:19px;letter-spacing:-.4px}
+.gbox p{margin:0 0 22px;color:var(--dim2);font-size:13px;line-height:1.55}
+.gin{width:100%;background:var(--card);border:1px solid var(--line);border-radius:13px;
+  padding:15px 16px;font-size:16px;color:var(--txt);font-family:inherit;outline:none;text-align:center;
+  letter-spacing:2px}
+.gin:focus{border-color:var(--acc2)}
+.gin.bad{border-color:var(--red);animation:shk .3s}
+@keyframes shk{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+.gerr{color:var(--red);font-size:12.5px;font-weight:600;height:16px;margin-top:9px}
+.grem{display:flex;align-items:center;justify-content:center;gap:9px;margin-top:16px;
+  color:var(--dim2);font-size:12.5px;font-weight:500}
+.gnote{margin-top:26px;color:#3f4a58;font-size:11px;line-height:1.6}
+.gnote code{background:var(--card);padding:1px 5px;border-radius:4px;color:var(--dim2)}
+</style>
+</head>
+<body>
+
+<div id="gate"><div class="gbox">
+  <div class="mark">حفظ</div>
+  <h2 id="gTitle">Ḥifdh &amp; Murājaʿah</h2>
+  <p id="gSub">This library is encrypted. Enter your password to decrypt it.</p>
+  <input class="gin" id="gPass" type="password" inputmode="text" autocomplete="current-password"
+         placeholder="••••••" aria-label="Password">
+  <div class="gerr" id="gErr"></div>
+  <button class="bigbtn" id="gGo">Decrypt &amp; open</button>
+  <label class="grem"><input type="checkbox" id="gRem" checked style="accent-color:var(--acc);width:16px;height:16px"> Stay signed in on this device</label>
+  <div class="gnote" id="gNote">AES‑256‑GCM · PBKDF2‑SHA256, 310,000 iterations.<br>Without the password there is nothing here to read.</div>
+</div></div>
+
+<header><div class="wrap hbar">
+  <button class="iconbtn back hidden" id="backBtn">‹</button>
+  <div class="htitle" id="hTitle">Ḥifdh</div>
+  <button class="iconbtn" id="srchBtn" title="Search">⌕</button>
+  <button class="iconbtn" id="starBtn" title="Bookmarked">★</button>
+  <button class="iconbtn" id="setBtn" title="Settings">⚙</button>
+</div></header>
+
+<main class="wrap" id="view"></main>
+
+<nav class="tabs" id="tabs">
+  <button class="tab on" data-tab="hifdh"><span class="ic">حفظ</span>Ḥifdh</button>
+  <button class="tab" data-tab="muraj"><span class="ic">مراجعة</span>Murājaʿah</button>
+</nav>
+
+<div class="sheet" id="sheet"><div class="sheetin">
+  <div class="grab"></div>
+  <div class="opt"><div><b>Arabic font</b><small>Naskh = plainest, no joined letters</small></div>
+    <div class="seg" id="segFont">
+      <button data-v="naskh">Naskh</button><button data-v="sch">Scheherazade</button><button data-v="amiri">Amiri</button>
+    </div></div>
+  <div class="preview" id="fPrev">بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ</div>
+  <div class="opt"><div><b>Arabic size</b></div>
+    <div class="seg" id="segSize"><button data-v="22">A</button><button data-v="26">A</button><button data-v="31">A</button></div></div>
+  <div class="opt"><div><b>Ḥifdh blank density</b><small>How much of the ayah is hidden at the Trace stage</small></div>
+    <div class="seg" id="segBlank"><button data-v="3">Light</button><button data-v="2">Medium</button><button data-v="1">Hard</button></div></div>
+  <div class="opt"><div><b>Shuffle order</b><small>Random instead of by topic</small></div>
+    <div class="switch" id="swShuf"><i></i></div></div>
+  <div class="opt"><div><b>Open notes by default</b><small>Show tafsīr &amp; ḥadīth without tapping</small></div>
+    <div class="switch" id="swTaf"><i></i></div></div>
+  <button class="bigbtn sec" id="lockBtn" style="margin-top:14px">Lock the app</button>
+  <button class="danger" id="resetH">Reset ḥifdh progress</button>
+  <button class="danger" id="resetBtn">Reset murājaʿah progress</button>
+</div></div>
+
+<script>
+/* Dataset lives encrypted in data.enc and is injected after the password
+   is verified. See README.md for how to add ayāt and rebuild. */
+let AYAT=[], SCIENCES={}, MISSION={}, TIERNAMES={};
+
+/* ---------------- state ---------------- */
+const LSP='mrj.v1', LSS='mrj.set.v3', LSB='mrj.bm.v1', LSH='mrj.hifdh.v1';
+let P = JSON.parse(localStorage.getItem(LSP)||'{}');          // SRS for murajaah
+let H = JSON.parse(localStorage.getItem(LSH)||'{}');          // hifdh stage 0..4
+let S = Object.assign({size:26,font:'naskh',blank:2,shuf:false,taf:false},
+                      JSON.parse(localStorage.getItem(LSS)||'{}'));
+let BM= JSON.parse(localStorage.getItem(LSB)||'[]');
+const sP=()=>localStorage.setItem(LSP,JSON.stringify(P));
+const sH=()=>localStorage.setItem(LSH,JSON.stringify(H));
+const sS=()=>localStorage.setItem(LSS,JSON.stringify(S));
+const sB=()=>localStorage.setItem(LSB,JSON.stringify(BM));
+
+const FONTS={naskh:"'Noto Naskh Arabic','Scheherazade New',serif",
+             sch:"'Scheherazade New','Noto Naskh Arabic',serif",
+             amiri:"'Amiri','Noto Naskh Arabic',serif"};
+const STEPS=[0,1,3,7,16,35,75];
+const STAGES=['Read','Trace','Recall','Lock in'];
+const today=()=>Math.floor(Date.now()/864e5);
+
+const stage =id=>H[id]||0;                       // 0 new … 4 memorised
+const memd  =id=>stage(id)>=4;
+const MEM   =()=>AYAT.filter(a=>memd(a.id));
+const isDue =id=>memd(id) && (!P[id]||P[id].d<=today());
+const lvl   =id=>P[id]?P[id].l:0;
+const byId  =id=>AYAT.find(a=>a.id===id);
+
+let nav={tab:'hifdh',screen:'home',sci:null,tier:null,mission:null,topic:null,q:'',bm:false};
+let ses=null;   // {mode:'hifdh'|'review'|'quiz', queue, i, phase, ...}
+
+const el=document.getElementById('view'), hTitle=document.getElementById('hTitle'),
+      backBtn=document.getElementById('backBtn'), tabsEl=document.getElementById('tabs');
+
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const qLink=k=>`https://quran.com/${k.split(':')[0]}/${k.split(':')[1]}/tafsirs`;
+const hLink=q=>`https://sunnah.com/search?q=${encodeURIComponent(q)}`;
+const shuf =a=>a.slice().sort(()=>Math.random()-.5);
+
+/* current selection of ayat from nav */
+function pool(){
+  let L = nav.mission ? MISSION[nav.mission].ids.map(byId) : AYAT.filter(a=>!nav.sci||a.sci===nav.sci);
+  if(nav.tier) L=L.filter(a=>a.tier===nav.tier);
+  if(nav.topic) L=L.filter(a=>a.topic===nav.topic);
+  if(nav.bm) L=L.filter(a=>BM.includes(a.id));
+  if(nav.tab==='muraj') L=L.filter(a=>memd(a.id));
+  const q=nav.q.trim().toLowerCase();
+  if(q) L=L.filter(a=>[a.q,a.en,a.ref,a.topic,a.ar,SCIENCES[a.sci].name].join(' ').toLowerCase().includes(q));
+  return L;
+}
+const scopeName=()=>nav.mission?MISSION[nav.mission].name
+  :nav.topic?nav.topic
+  :nav.sci?SCIENCES[nav.sci].name+(nav.tier?' · '+TIERNAMES[nav.tier].n:'')
+  :nav.bm?'Bookmarked':'All ayāt';
+
+/* ---------------- shared card ---------------- */
+function notesHTML(a){
+  const taf=a.t.map(([w,t])=>`<div class="tp"><b>${esc(w)}:</b> ${esc(t)}</div>`).join('');
+  const had=(a.h||[]).map(([s,t,q])=>
+    `<div class="tp"><b>${esc(s)}:</b> ${esc(t)} <a class="tlink" href="${hLink(q)}" target="_blank" rel="noopener">find on sunnah.com ↗</a></div>`).join('');
+  const on=S.taf?' on':'';
+  return `<div class="btnrow">
+      <button class="tafbtn" data-taf="${a.id}">${S.taf?'Hide':'Tafsīr'} (${a.t.length})</button>
+      ${had?`<button class="tafbtn hd" data-had="${a.id}">${S.taf?'Hide':'Ḥadīth'} (${a.h.length})</button>`:''}
+    </div>
+    <div class="taf${on}" id="taf-${a.id}">${taf}
+      <a class="tlink" href="${qLink(a.key)}" target="_blank" rel="noopener">Full tafsīr on quran.com ↗</a></div>
+    ${had?`<div class="taf hd${on}" id="had-${a.id}"><div class="hbox">${had}</div></div>`:''}`;
+}
+function cardHTML(a,showSci){
+  const st=stage(a.id);
+  return `<div class="card">
+    <div class="toprow"><div style="flex:1">
+      ${showSci?`<div class="tag" style="color:${SCIENCES[a.sci].c}">${esc(SCIENCES[a.sci].name)} · ${esc(a.topic)}</div>`:''}
+      <div class="qlab">Daleel for
+        <span class="stg${st>=4?' ok':''}">${st>=4?'Memorised ✓':st?STAGES[st-1]:'Not started'}</span></div>
+      <div class="q">${esc(a.q)}</div>
+    </div><button class="star${BM.includes(a.id)?' on':''}" data-star="${a.id}">${BM.includes(a.id)?'★':'☆'}</button></div>
+    <div class="ar">${a.ar}</div>
+    <div class="ref">${esc(a.ref)}</div>
+    <div class="en">${esc(a.en)}</div>
+    ${notesHTML(a)}</div>`;
+}
+function bindCards(){
+  el.querySelectorAll('[data-taf]').forEach(b=>b.onclick=()=>{
+    const d=document.getElementById('taf-'+b.dataset.taf); d.classList.toggle('on');
+    b.textContent=(d.classList.contains('on')?'Hide':'Tafsīr')+` (${d.querySelectorAll('.tp').length})`});
+  el.querySelectorAll('[data-had]').forEach(b=>b.onclick=()=>{
+    const d=document.getElementById('had-'+b.dataset.had); d.classList.toggle('on');
+    b.textContent=(d.classList.contains('on')?'Hide':'Ḥadīth')+` (${d.querySelectorAll('.tp').length})`});
+  el.querySelectorAll('[data-star]').forEach(b=>b.onclick=()=>{
+    const id=b.dataset.star, i=BM.indexOf(id);
+    if(i<0)BM.push(id); else BM.splice(i,1); sB();
+    b.classList.toggle('on',i<0); b.textContent=i<0?'★':'☆'});
+  el.querySelectorAll('.blank').forEach(b=>b.onclick=()=>b.classList.add('rev'));
+}
+
+/* ---------------- render ---------------- */
+function render(){
+  document.documentElement.style.setProperty('--arsize',S.size+'px');
+  document.documentElement.style.setProperty('--arfont',FONTS[S.font]||FONTS.naskh);
+  backBtn.classList.toggle('hidden',nav.screen==='home');
+  tabsEl.style.display = nav.screen==='session' ? 'none':'flex';
+  [...tabsEl.children].forEach(t=>t.classList.toggle('on',t.dataset.tab===nav.tab));
+  ({home:homeScreen,packs:packsScreen,list:listScreen,session:sessionScreen})[nav.screen]();
+  window.scrollTo(0,0);
+}
+
+function packCard(o){
+  const {key,name,ar,c,desc,ids,onclick} = o;
+  const done=ids.filter(i=>memd(i)).length, pct=ids.length?Math.round(done/ids.length*100):0;
+  const due=ids.filter(i=>isDue(i)).length;
+  return `<button class="pack" data-pk="${key}">
+    <div class="pt"><div class="dot" style="background:${c}">${ar.slice(0,2)}</div>
+      <b>${esc(name)}</b><span class="n">${ids.length} ayāt</span></div>
+    ${desc?`<p>${esc(desc)}</p>`:''}
+    <div class="bar"><i style="width:${pct}%;background:${c}"></i></div>
+    <div class="pmeta"><span>${done} / ${ids.length} memorised</span>
+      <span style="color:${nav.tab==='muraj'&&due?'var(--gold)':'inherit'}">${nav.tab==='muraj'?(due?due+' due':(done?'all revised ✓':'—')):pct+'%'}</span></div>
+  </button>`;
+}
+
+function homeScreen(){
+  const M=MEM().length, due=AYAT.filter(a=>isDue(a.id)).length,
+        started=AYAT.filter(a=>stage(a.id)>0&&stage(a.id)<4).length;
+  if(nav.tab==='hifdh'){
+    hTitle.textContent='Ḥifdh';
+    const missions=Object.keys(MISSION).map(k=>packCard({key:'m:'+k,...MISSION[k]})).join('');
+    const scis=Object.keys(SCIENCES).map(k=>{
+      const A=AYAT.filter(a=>a.sci===k), done=A.filter(a=>memd(a.id)).length;
+      const pct=Math.round(done/A.length*100);
+      return `<button class="trow" data-sci="${k}">
+        <div class="dot" style="background:${SCIENCES[k].c};width:28px;height:28px;border-radius:8px;
+          display:grid;place-items:center;font-family:var(--arfont);font-size:12px;color:#06110d;font-weight:700;flex:none">${SCIENCES[k].ar.slice(0,2)}</div>
+        <b>${esc(SCIENCES[k].name)}</b>
+        ${done?`<span class="pill a">${done}✓</span>`:''}<span class="pill">${A.length}</span>
+        <span class="chev">›</span></button>`}).join('');
+    const nextQ=AYAT.filter(a=>stage(a.id)<4);
+    el.innerHTML=`
+      <div class="hero"><h1>Ḥifdh</h1><div class="harab">حفظ الأدلة</div>
+        <p>Learn the ayah in four stages — read it, trace it, recall it, lock it in. Once locked in it moves across to Murājaʿah automatically.</p></div>
+      <div class="stats">
+        <div class="stat done"><b>${M}</b><span>Memorised</span></div>
+        <div class="stat blue"><b>${started}</b><span>In progress</span></div>
+        <div class="stat"><b>${AYAT.length-M}</b><span>Remaining</span></div></div>
+      <button class="bigbtn" id="cont" ${nextQ.length?'':'disabled'}>
+        ${nextQ.length?(started?`Continue ḥifdh · ${started} in progress`:'Start ḥifdh — Asās first'):'Everything memorised ✓'}</button>
+      <div class="sectlabel">Mission packs <span>— curated for a purpose</span></div>${missions}
+      <div class="sectlabel">By science <span>— Asās then Bināʾ</span></div>${scis}
+      <div class="foot">Uthmānī script from the quran.com API · Muḥsin Khān &amp; Hilālī translation.<br>
+        Tafsīr and ḥadīth notes are condensed and attributed — verify with the linked source.</div>`;
+    el.querySelector('#cont').onclick=()=>{
+      const inprog=nextQ.filter(a=>stage(a.id)>0), asas=nextQ.filter(a=>a.tier===1);
+      startHifdh((inprog.length?inprog:(asas.length?asas:nextQ)).slice(0,12));
+    };
+  } else {
+    hTitle.textContent='Murājaʿah';
+    if(!M){
+      el.innerHTML=`<div class="hero"><h1>Murājaʿah</h1><div class="harab">مراجعة</div></div>
+        <div class="empty">Nothing to revise yet.<br><br>
+        Murājaʿah only holds what you have actually memorised. Memorise your first ayah in the <b>Ḥifdh</b> tab and it will appear here.</div>
+        <button class="bigbtn" id="go">Go to Ḥifdh</button>`;
+      el.querySelector('#go').onclick=()=>{nav.tab='hifdh';render()};return;
+    }
+    const strong=MEM().filter(a=>lvl(a.id)>=4).length;
+    const missions=Object.keys(MISSION).filter(k=>MISSION[k].ids.some(memd))
+      .map(k=>packCard({key:'m:'+k,...MISSION[k]})).join('');
+    const scis=Object.keys(SCIENCES).filter(k=>MEM().some(a=>a.sci===k)).map(k=>{
+      const A=MEM().filter(a=>a.sci===k), d=A.filter(a=>isDue(a.id)).length;
+      return `<button class="trow" data-sci="${k}">
+        <div class="dot" style="background:${SCIENCES[k].c};width:28px;height:28px;border-radius:8px;
+          display:grid;place-items:center;font-family:var(--arfont);font-size:12px;color:#06110d;font-weight:700;flex:none">${SCIENCES[k].ar.slice(0,2)}</div>
+        <b>${esc(SCIENCES[k].name)}</b>
+        ${d?`<span class="pill g">${d} due</span>`:''}<span class="pill">${A.length}</span>
+        <span class="chev">›</span></button>`}).join('');
+    el.innerHTML=`
+      <div class="hero"><h1>Murājaʿah</h1><div class="harab">مراجعة الأدلة</div>
+        <p>Revise what you have memorised, and test whether you can actually reach for the right daleel under pressure.</p></div>
+      <div class="stats">
+        <div class="stat due"><b>${due}</b><span>Due now</span></div>
+        <div class="stat done"><b>${strong}</b><span>Strong</span></div>
+        <div class="stat blue"><b>${M}</b><span>In rotation</span></div></div>
+      <button class="bigbtn" id="rev" ${due?'':'disabled'}>${due?`Revise · ${due} due`:'Nothing due — all revised ✓'}</button>
+      <button class="bigbtn gold" id="quiz" ${M>=4?'':'disabled'}>${M>=4?'Test me — multiple choice':'Test unlocks at 4 memorised'}</button>
+      <button class="bigbtn sec" id="revall">Revise everything (${M})</button>
+      ${missions?`<div class="sectlabel">Mission packs</div>${missions}`:''}
+      <div class="sectlabel">By science</div>${scis}
+      <div class="foot">Intervals: 1 · 3 · 7 · 16 · 35 · 75 days. Progress is stored on this device only.</div>`;
+    el.querySelector('#rev').onclick=()=>startReview(AYAT.filter(a=>isDue(a.id)));
+    el.querySelector('#revall').onclick=()=>startReview(MEM());
+    el.querySelector('#quiz').onclick=()=>startQuiz(MEM());
+  }
+  el.querySelectorAll('[data-sci]').forEach(b=>b.onclick=()=>{
+    nav.sci=b.dataset.sci;nav.mission=null;nav.tier=null;nav.topic=null;nav.screen='packs';render()});
+  el.querySelectorAll('[data-pk]').forEach(b=>b.onclick=()=>{
+    nav.mission=b.dataset.pk.slice(2);nav.sci=null;nav.tier=null;nav.topic=null;nav.screen='packs';render()});
+}
+
+function packsScreen(){
+  hTitle.textContent=scopeName();
+  let head='', body='';
+  if(nav.mission){
+    const M=MISSION[nav.mission], L=M.ids.map(byId).filter(a=>nav.tab==='hifdh'||memd(a.id));
+    head=`<p style="color:var(--dim);font-size:13.5px;line-height:1.55;margin:14px 0 4px">${esc(M.desc)}</p>`;
+    body=actionBtns(L)+topicRows(L);
+  } else {
+    const A=AYAT.filter(a=>a.sci===nav.sci&&(nav.tab==='hifdh'||memd(a.id)));
+    const tiers=[1,2].map(t=>{
+      const ids=A.filter(a=>a.tier===t).map(a=>a.id); if(!ids.length)return '';
+      return packCard({key:'t:'+t,name:`${TIERNAMES[t].n} — ${TIERNAMES[t].sub}`,ar:TIERNAMES[t].ar,
+        c:SCIENCES[nav.sci].c,desc:'',ids});}).join('');
+    head=`<div class="sectlabel">Packs</div>${tiers}`;
+    body=actionBtns(A)+topicRows(A);
+  }
+  el.innerHTML=head+body+'<div style="height:20px"></div>';
+  el.querySelectorAll('[data-pk]').forEach(b=>b.onclick=()=>{nav.tier=+b.dataset.pk.slice(2);nav.screen='list';render()});
+  el.querySelectorAll('[data-topic]').forEach(b=>b.onclick=()=>{nav.topic=b.dataset.topic;nav.screen='list';render()});
+  bindActions();
+}
+function actionBtns(L){
+  if(nav.tab==='hifdh'){
+    const todo=L.filter(a=>stage(a.id)<4);
+    return `<button class="bigbtn" id="act" ${todo.length?'':'disabled'}>
+      ${todo.length?`Memorise these · ${todo.length} left`:'All memorised ✓'}</button>
+      <button class="bigbtn sec" id="browse">Browse all ${L.length}</button>`;
+  }
+  const due=L.filter(a=>isDue(a.id));
+  return `<button class="bigbtn" id="act" ${due.length?'':'disabled'}>${due.length?`Revise · ${due.length} due`:'Nothing due ✓'}</button>
+    <button class="bigbtn gold" id="qz" ${L.length>=4?'':'disabled'}>${L.length>=4?'Test me on these':'Test needs 4+'}</button>
+    <button class="bigbtn sec" id="browse">Browse all ${L.length}</button>`;
+}
+function bindActions(){
+  const L = nav.mission ? MISSION[nav.mission].ids.map(byId).filter(a=>nav.tab==='hifdh'||memd(a.id))
+                        : AYAT.filter(a=>a.sci===nav.sci&&(nav.tab==='hifdh'||memd(a.id)));
+  const act=el.querySelector('#act');
+  if(act) act.onclick=()=> nav.tab==='hifdh'
+      ? startHifdh(L.filter(a=>stage(a.id)<4))
+      : startReview(L.filter(a=>isDue(a.id)));
+  const qz=el.querySelector('#qz'); if(qz) qz.onclick=()=>startQuiz(L);
+  const br=el.querySelector('#browse'); if(br) br.onclick=()=>{nav.screen='list';render()};
+}
+function topicRows(L){
+  const m={}; L.forEach(a=>m[a.topic]=(m[a.topic]||0)+1);
+  const rows=Object.entries(m).map(([t,n])=>{
+    const A=L.filter(a=>a.topic===t);
+    const badge = nav.tab==='hifdh'
+      ? (A.every(a=>memd(a.id))?'<span class="pill a">✓</span>':`<span class="pill">${A.filter(a=>memd(a.id)).length}/${n}</span>`)
+      : (A.filter(a=>isDue(a.id)).length?`<span class="pill g">${A.filter(a=>isDue(a.id)).length} due</span><span class="pill">${n}</span>`:`<span class="pill">${n}</span>`);
+    return `<button class="trow" data-topic="${esc(t)}"><b>${esc(t)}</b>${badge}<span class="chev">›</span></button>`}).join('');
+  return `<div class="sectlabel">Topics <span>— ${Object.keys(m).length}</span></div>${rows}`;
+}
+
+function listScreen(){
+  hTitle.textContent=scopeName();
+  const L=pool(), showSci=!nav.sci&&!nav.mission;
+  el.innerHTML=`<div class="search"><span style="color:var(--dim2)">⌕</span>
+      <input id="sq" placeholder="Search question, ayah, topic…" value="${esc(nav.q)}"></div>
+    ${L.length?`<button class="bigbtn sec" id="go">${nav.tab==='hifdh'?`Memorise these ${L.filter(a=>stage(a.id)<4).length}`:`Revise these ${L.length}`}</button><div style="height:12px"></div>`:''}
+    ${L.length?L.map(a=>cardHTML(a,showSci)).join(''):'<div class="empty">Nothing matches that.</div>'}
+    <div style="height:20px"></div>`;
+  const sq=el.querySelector('#sq');
+  sq.oninput=()=>{const p=sq.selectionStart;nav.q=sq.value;listScreen();
+    const s2=el.querySelector('#sq');s2.focus();s2.setSelectionRange(p,p)};
+  const go=el.querySelector('#go');
+  if(go) go.onclick=()=> nav.tab==='hifdh' ? startHifdh(L.filter(a=>stage(a.id)<4)) : startReview(L);
+  bindCards();
+}
+
+/* ---------------- ḥifdh session ---------------- */
+function blanked(ar){
+  const w=ar.split(' '); const every=+S.blank+1;
+  return w.map((x,i)=> (i%every===every-1 && x.length>1) ? `<span class="blank">${x}</span>` : x).join(' ');
+}
+function startHifdh(list){
+  if(!list.length)return;
+  ses={mode:'hifdh',queue:(S.shuf?shuf(list):list).slice(),i:0,sub:0,done:0};
+  nav.screen='session';render();
+}
+function startReview(list){
+  if(!list.length)return;
+  ses={mode:'review',queue:(S.shuf?shuf(list):list).slice(),i:0,phase:0};
+  nav.screen='session';render();
+}
+function startQuiz(list){
+  const pool_=list.filter(a=>memd(a.id));
+  if(pool_.length<4)return;
+  ses={mode:'quiz',queue:shuf(pool_).slice(0,Math.min(12,pool_.length)),i:0,right:0,wrong:0,answered:false,all:pool_};
+  nav.screen='session';render();
+}
+
+function sessionScreen(){
+  if(ses.mode==='hifdh')  return hifdhView();
+  if(ses.mode==='review') return reviewView();
+  return quizView();
+}
+
+function hifdhView(){
+  if(ses.i>=ses.queue.length){
+    hTitle.textContent='Done';
+    el.innerHTML=`<div class="donebox"><div class="big">✓</div><h2>Ḥifdh session complete</h2>
+      <p><b>${ses.done}</b> ayāt locked in and moved to Murājaʿah.<br>Come back tomorrow and revise them there.</p>
+      <button class="bigbtn" id="mj">Go to Murājaʿah</button>
+      <button class="bigbtn sec" id="hm">Back to Ḥifdh</button></div>`;
+    el.querySelector('#mj').onclick=()=>{nav.tab='muraj';nav.screen='home';nav.sci=null;nav.mission=null;nav.tier=null;nav.topic=null;render()};
+    el.querySelector('#hm').onclick=()=>{nav.screen='home';render()};return;
+  }
+  const a=ses.queue[ses.i], st=ses.sub;   // 0 read, 1 trace, 2 recall, 3 lock
+  hTitle.textContent=`Ḥifdh ${ses.i+1} / ${ses.queue.length}`;
+  const steps=STAGES.map((s,k)=>`<div class="${k<=st?'on':''}"></div>`).join('');
+  let bodyHTML='', ctrl='';
+  if(st===0){
+    bodyHTML=`<div class="ar">${a.ar}</div><div class="ref">${esc(a.ref)}</div>
+      <div class="en">${esc(a.en)}</div>${notesHTML(a)}
+      <div class="hint">Read it aloud three times. Link the question to the wording — that link is what you are actually memorising.</div>`;
+    ctrl=`<button class="bigbtn" id="nx">I've read it →</button>`;
+  } else if(st===1){
+    bodyHTML=`<div class="ar">${blanked(a.ar)}</div><div class="ref">${esc(a.ref)}</div>
+      <div class="hint">Fill the gaps from memory. Tap any blank to check it.</div>`;
+    ctrl=`<button class="bigbtn" id="nx">Next → recall</button>`;
+  } else if(st===2){
+    bodyHTML=ses.rev?`<div class="ar">${a.ar}</div><div class="ref">${esc(a.ref)}</div><div class="en">${esc(a.en)}</div>`
+      :`<div class="hint">Recite the ayah out loud from memory, then reveal to check.</div>`;
+    ctrl=ses.rev?`<div class="rate two">
+        <button class="r0" id="again">Not yet<small>read it again</small></button>
+        <button class="r2" id="nx">Got it<small>final check</small></button></div>`
+      :`<button class="bigbtn sec" id="show">Reveal the ayah</button>`;
+  } else {
+    bodyHTML=ses.rev?`<div class="ar">${a.ar}</div><div class="ref">${esc(a.ref)}</div><div class="en">${esc(a.en)}</div>`
+      :`<div class="hint">Last check. Say the ayah AND its reference, as if someone just asked you this question.</div>`;
+    ctrl=ses.rev?`<div class="rate two">
+        <button class="r0" id="again">Not solid<small>back to trace</small></button>
+        <button class="r2" id="lock">Memorised ✓<small>send to murājaʿah</small></button></div>`
+      :`<button class="bigbtn sec" id="show">Reveal to check</button>`;
+  }
+  el.innerHTML=`<div class="sess">
+    <div class="prog"><i style="width:${(ses.i/ses.queue.length)*100}%"></i></div>
+    <div class="steps">${steps}</div>
+    <div class="sesscard">
+      <div class="tag" style="color:${SCIENCES[a.sci].c}">${esc(SCIENCES[a.sci].name)} · ${esc(a.topic)}</div>
+      <div class="stagelab">Stage ${st+1} of 4 — ${STAGES[st]}</div>
+      <div class="qlab">Daleel for</div><div class="sessq">${esc(a.q)}</div>
+      ${bodyHTML}
+      <div style="flex:1;min-height:14px"></div>${ctrl}
+    </div></div>`;
+  const g=id=>el.querySelector('#'+id);
+  if(g('nx'))    g('nx').onclick   =()=>{ses.sub++;ses.rev=false;H[a.id]=Math.max(H[a.id]||0,ses.sub);sH();render()};
+  if(g('show'))  g('show').onclick =()=>{ses.rev=true;render()};
+  if(g('again')) g('again').onclick=()=>{ses.sub=(st===3?1:0);ses.rev=false;render()};
+  if(g('lock'))  g('lock').onclick =()=>{
+    H[a.id]=4;sH(); P[a.id]={l:1,d:today()+1,n:0};sP();
+    ses.done++;ses.i++;ses.sub=0;ses.rev=false;render()};
+  bindCards();
+}
+
+function reviewView(){
+  if(ses.i>=ses.queue.length){
+    hTitle.textContent='Done';
+    el.innerHTML=`<div class="donebox"><div class="big">✓</div><h2>Murājaʿah complete</h2>
+      <p>${ses.queue.length} ayāt revised. Baraka Allāhu fīk.</p>
+      <button class="bigbtn" id="hm">Back</button></div>`;
+    el.querySelector('#hm').onclick=()=>{nav.screen='home';render()};return;
+  }
+  const a=ses.queue[ses.i], showAr=ses.phase>=1, showEn=ses.phase>=2;
+  hTitle.textContent=`Revise ${ses.i+1} / ${ses.queue.length}`;
+  el.innerHTML=`<div class="sess">
+    <div class="prog"><i style="width:${(ses.i/ses.queue.length)*100}%"></i></div>
+    <div class="sesscard">
+      <div class="tag" style="color:${SCIENCES[a.sci].c}">${esc(SCIENCES[a.sci].name)} · ${esc(a.topic)}</div>
+      <div class="qlab">Daleel for</div><div class="sessq">${esc(a.q)}</div>
+      ${showAr?`<div class="ar">${a.ar}</div><div class="ref">${esc(a.ref)}</div>`:''}
+      ${showEn?`<div class="en">${esc(a.en)}</div>${notesHTML(a)}`:''}
+      <div style="flex:1;min-height:14px"></div>
+      ${!showEn?`<button class="bigbtn" id="next">${showAr?'Show translation':'Show the ayah'}</button>`:
+        `<div class="rate">
+          <button class="r0" data-g="0">Again<small>reset</small></button>
+          <button class="r1" data-g="1">Good<small>${STEPS[Math.min(lvl(a.id)+1,6)]}d</small></button>
+          <button class="r2" data-g="2">Easy<small>${STEPS[Math.min(lvl(a.id)+2,6)]}d</small></button></div>`}
+    </div></div>`;
+  const n=el.querySelector('#next'); if(n)n.onclick=()=>{ses.phase++;render()};
+  el.querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>{
+    const g=+b.dataset.g, r=P[a.id]||{l:0,n:0}, l=g===0?0:Math.min(r.l+(g===2?2:1),6);
+    P[a.id]={l,d:today()+STEPS[l],n:(r.n||0)+1}; sP();
+    if(g===0) ses.queue.push(a);
+    ses.i++; ses.phase=0; render()});
+  bindCards();
+}
+
+function quizView(){
+  if(ses.i>=ses.queue.length){
+    const tot=ses.right+ses.wrong, pc=tot?Math.round(ses.right/tot*100):0;
+    hTitle.textContent='Result';
+    el.innerHTML=`<div class="donebox"><div class="big">${pc>=80?'✓':pc>=50?'~':'!'}</div>
+      <h2>${ses.right} / ${tot} correct</h2>
+      <p>${pc>=80?'Solid. You can reach for these under pressure.'
+          :pc>=50?'Getting there — the ones you missed have been pushed back into rotation.'
+          :'Worth going back through these in Ḥifdh before relying on them.'}</p>
+      <button class="bigbtn" id="again">Test again</button>
+      <button class="bigbtn sec" id="hm">Back</button></div>`;
+    el.querySelector('#again').onclick=()=>startQuiz(ses.all);
+    el.querySelector('#hm').onclick=()=>{nav.screen='home';render()};return;
+  }
+  const a=ses.queue[ses.i];
+  const reverse = ses.i%2===1;              // alternate question type
+  const distr=shuf(ses.all.filter(x=>x.id!==a.id)).slice(0,3);
+  if(!ses.opts) ses.opts=shuf([a,...distr]);
+  hTitle.textContent=`Test ${ses.i+1} / ${ses.queue.length}`;
+  const optHTML=ses.opts.map((o,k)=>{
+    const label = reverse ? esc(o.q) : `<span class="qref">${o.ar.split(' ').slice(0,6).join(' ')}…</span><br><span style="font-size:12px;color:var(--dim2)">${esc(o.ref)}</span>`;
+    let cls='opt2';
+    if(ses.answered){ cls += o.id===a.id?' right' : (ses.picked===o.id?' wrong':' dim'); }
+    return `<button class="${cls}" data-opt="${o.id}">${label}</button>`}).join('');
+  el.innerHTML=`<div class="sess">
+    <div class="scorebar"><span>Correct <b>${ses.right}</b></span><span>Missed <i>${ses.wrong}</i></span>
+      <span style="margin-left:auto">${ses.i+1} / ${ses.queue.length}</span></div>
+    <div class="prog"><i style="width:${(ses.i/ses.queue.length)*100}%"></i></div>
+    <div class="sesscard">
+      <div class="stagelab">${reverse?'Which question does this ayah answer?':'Which ayah would you use?'}</div>
+      ${reverse?`<div class="ar">${a.ar}</div><div class="ref">${esc(a.ref)}</div>`
+               :`<div class="sessq">${esc(a.q)}</div>`}
+      <div class="opts">${optHTML}</div>
+      ${ses.answered?`<div class="en">${esc(a.en)}</div>
+        <div class="tag" style="color:${SCIENCES[a.sci].c};margin-top:10px">${esc(SCIENCES[a.sci].name)} · ${esc(a.topic)}</div>`:''}
+      <div style="flex:1;min-height:14px"></div>
+      ${ses.answered?`<button class="bigbtn" id="nx">Next →</button>`:''}
+    </div></div>`;
+  el.querySelectorAll('[data-opt]').forEach(b=>b.onclick=()=>{
+    if(ses.answered)return;
+    ses.answered=true; ses.picked=b.dataset.opt;
+    if(ses.picked===a.id) ses.right++;
+    else { ses.wrong++; const r=P[a.id]||{l:0,n:0}; P[a.id]={l:0,d:today(),n:r.n||0}; sP(); }
+    render()});
+  const nx=el.querySelector('#nx');
+  if(nx) nx.onclick=()=>{ses.i++;ses.answered=false;ses.picked=null;ses.opts=null;render()};
+}
+
+/* ---------------- chrome ---------------- */
+[...tabsEl.children].forEach(t=>t.onclick=()=>{
+  nav.tab=t.dataset.tab;nav.screen='home';nav.sci=null;nav.mission=null;nav.tier=null;nav.topic=null;nav.q='';nav.bm=false;
+  ses=null;render()});
+backBtn.onclick=()=>{
+  if(nav.screen==='session'){ ses=null; nav.screen = (nav.sci||nav.mission)?'packs':'home'; }
+  else if(nav.screen==='list'){
+    if(nav.bm||(!nav.sci&&!nav.mission)){nav.bm=false;nav.screen='home'}
+    else if(nav.topic||nav.tier){nav.topic=null;nav.tier=null;nav.screen='packs'}
+    else nav.screen='packs';
+    nav.q='';
+  }
+  else if(nav.screen==='packs'){nav.sci=null;nav.mission=null;nav.screen='home'}
+  render();
+};
+document.getElementById('starBtn').onclick=()=>{
+  nav.bm=true;nav.sci=null;nav.mission=null;nav.tier=null;nav.topic=null;nav.q='';nav.screen='list';render()};
+document.getElementById('srchBtn').onclick=()=>{
+  nav.bm=false;nav.sci=null;nav.mission=null;nav.tier=null;nav.topic=null;nav.q='';nav.screen='list';render()};
+
+const sheet=document.getElementById('sheet');
+document.getElementById('setBtn').onclick=()=>sheet.classList.add('on');
+sheet.onclick=e=>{if(e.target===sheet)sheet.classList.remove('on')};
+function bindSw(id,key){const s=document.getElementById(id);const p=()=>s.classList.toggle('on',!!S[key]);p();
+  s.onclick=()=>{S[key]=!S[key];sS();p();render()}}
+bindSw('swShuf','shuf');bindSw('swTaf','taf');
+const segSize=document.getElementById('segSize'), segFont=document.getElementById('segFont'),
+      segBlank=document.getElementById('segBlank');
+[...segSize.children].forEach((b,i)=>{b.style.fontSize=[13,16,19][i]+'px';
+  b.onclick=()=>{S.size=+b.dataset.v;sS();paint();render()}});
+[...segFont.children].forEach(b=>b.onclick=()=>{S.font=b.dataset.v;sS();paint();render()});
+[...segBlank.children].forEach(b=>b.onclick=()=>{S.blank=+b.dataset.v;sS();paint();render()});
+function paint(){
+  [...segSize.children].forEach(b=>b.classList.toggle('on',+b.dataset.v===S.size));
+  [...segFont.children].forEach(b=>b.classList.toggle('on',b.dataset.v===S.font));
+  [...segBlank.children].forEach(b=>b.classList.toggle('on',+b.dataset.v===S.blank));
+  document.documentElement.style.setProperty('--arsize',S.size+'px');
+  document.documentElement.style.setProperty('--arfont',FONTS[S.font]||FONTS.naskh);
+}
+paint();
+document.getElementById('resetBtn').onclick=()=>{
+  if(confirm('Reset murājaʿah scheduling? Your memorised list is kept.')){P={};sP();sheet.classList.remove('on');render()}};
+document.getElementById('lockBtn').onclick=()=>{
+  localStorage.removeItem('mrj.key.v1'); sessionStorage.removeItem('mrj.key.v1');
+  location.reload();
+};
+document.getElementById('resetH').onclick=()=>{
+  if(confirm('Reset ALL ḥifdh progress? Everything returns to not-memorised and Murājaʿah empties.')){
+    H={};sH();P={};sP();sheet.classList.remove('on');render()}};
+
+if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
+
+/* ================= ENCRYPTED DATA + GATE =================
+   data.enc = base64( salt[16] | iv[12] | AES-256-GCM ciphertext | tag[16] )
+   key = PBKDF2-SHA256(password, salt, 310000, 256 bits)
+   A wrong password fails GCM authentication, so the data is never revealed.
+   To change the password or add ayāt, see README.md / build.html.          */
+const KDF_ITER=310000, LSA='mrj.key.v1', REMEMBER_DAYS=90;
+const gate=document.getElementById('gate'), gPass=document.getElementById('gPass'),
+      gErr=document.getElementById('gErr'), gRem=document.getElementById('gRem'),
+      gGo=document.getElementById('gGo'), gSub=document.getElementById('gSub');
+
+let ENC=null;                              // raw bytes of data.enc
+const b64d=s=>Uint8Array.from(atob(s.replace(/\s+/g,'')),c=>c.charCodeAt(0));
+const b64e=b=>btoa(String.fromCharCode(...new Uint8Array(b)));
+
+async function loadEnc(){
+  if(ENC) return ENC;
+  const r=await fetch('data.enc',{cache:'no-cache'});
+  if(!r.ok) throw new Error('data.enc missing ('+r.status+')');
+  ENC=b64d(await r.text());
+  return ENC;
+}
+async function deriveKey(pass,salt){
+  const base=await crypto.subtle.importKey('raw',new TextEncoder().encode(pass),'PBKDF2',false,['deriveKey']);
+  return crypto.subtle.deriveKey(
+    {name:'PBKDF2',salt,iterations:KDF_ITER,hash:'SHA-256'},
+    base,{name:'AES-GCM',length:256},true,['decrypt']);
+}
+async function decryptWith(keyOrPass,isRawKey){
+  const buf=await loadEnc();
+  const salt=buf.slice(0,16), iv=buf.slice(16,28), body=buf.slice(28);
+  const key = isRawKey
+    ? await crypto.subtle.importKey('raw',keyOrPass,{name:'AES-GCM'},true,['decrypt'])
+    : await deriveKey(keyOrPass,salt);
+  const plain=await crypto.subtle.decrypt({name:'AES-GCM',iv},key,body);   // throws if wrong
+  const data=JSON.parse(new TextDecoder().decode(plain));
+  if(!data.AYAT||!Array.isArray(data.AYAT)||!data.AYAT.length) throw new Error('bad payload');
+  return {data,key};
+}
+function install(data){
+  AYAT=data.AYAT; SCIENCES=data.SCIENCES; MISSION=data.MISSION; TIERNAMES=data.TIERNAMES;
+}
+function unlock(data){
+  install(data);
+  gate.classList.add('hide');
+  document.body.style.overflow='';
+  render();
+}
+function fail(msg){
+  gErr.textContent=msg;
+  gPass.classList.add('bad'); gPass.value=''; gPass.focus();
+  setTimeout(()=>gPass.classList.remove('bad'),350);
+  gGo.disabled=false; gGo.textContent='Decrypt & open';
+}
+let busy=false;
+async function tryPass(){
+  if(busy) return;
+  const v=gPass.value;
+  if(!v){gPass.focus();return}
+  busy=true; gGo.disabled=true; gGo.textContent='Decrypting…'; gErr.textContent='';
+  try{
+    const {data,key}=await decryptWith(v,false);
+    if(gRem.checked){
+      const raw=await crypto.subtle.exportKey('raw',key);
+      localStorage.setItem(LSA,JSON.stringify({k:b64e(raw),exp:Date.now()+REMEMBER_DAYS*864e5}));
+    } else {
+      const raw=await crypto.subtle.exportKey('raw',key);
+      sessionStorage.setItem(LSA,b64e(raw));
+    }
+    busy=false; unlock(data);
+  }catch(e){
+    busy=false;
+    fail(/missing|Failed to fetch|NetworkError/i.test(e.message)?'Could not load data.enc.':'Wrong password.');
+  }
+}
+gGo.onclick=tryPass;
+gPass.addEventListener('keydown',e=>{if(e.key==='Enter')tryPass()});
+gPass.addEventListener('input',()=>{gErr.textContent=''});
+
+(async function boot(){
+  document.body.style.overflow='hidden';
+  if(!(window.crypto&&crypto.subtle)){
+    gSub.textContent='This browser cannot decrypt the library. Open the site over https:// (not a local file).';
+    gPass.style.display=gGo.style.display=gRem.parentElement.style.display='none';
+    return;
+  }
+  const tryKey=async raw=>{ try{ const {data}=await decryptWith(b64d(raw),true); unlock(data); return true; }
+                            catch(e){ return false } };
+  try{
+    const s=sessionStorage.getItem(LSA);
+    if(s && await tryKey(s)) return;
+    const rawT=localStorage.getItem(LSA);
+    if(rawT){
+      const t=JSON.parse(rawT);
+      if(t&&t.exp>Date.now()){ if(await tryKey(t.k)) return; }
+      localStorage.removeItem(LSA);         // stale or superseded by a rebuild
+    }
+  }catch(e){ localStorage.removeItem(LSA); }
+  gPass.focus();
+})();
+</script>
+</body>
+</html>

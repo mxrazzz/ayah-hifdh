@@ -1,0 +1,10 @@
+# The readable source of the library — NEVER commit this to a public repo.
+# Keep it on your own machine and in a backup. data.enc is the published form.
+ayat.js
+
+# local noise
+node_modules/
+package*.json
+.DS_Store
+Thumbs.db
+*.log
