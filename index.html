@@ -132,13 +132,11 @@ header{position:sticky;top:0;z-index:50;background:rgba(13,17,23,.92);
 .stg{display:inline-block;font-size:10px;font-weight:700;border-radius:6px;padding:2px 7px;
   border:1px solid var(--line);color:var(--dim2);margin-left:6px}
 .stg.ok{color:var(--acc);border-color:#1d3d31}
-.repRow{display:flex;align-items:center;gap:9px;margin-top:12px;border-top:1px solid var(--line);padding-top:12px}
 .repBtn{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:600;background:var(--bg2);
-  border:1px solid var(--line);border-radius:9px;padding:7px 11px;color:var(--acc)}
+  border:1px solid var(--line);border-radius:9px;padding:6px 10px;color:var(--acc);flex:none}
 .repBtn:active{background:var(--card2)}
 .repCount{background:var(--acc);color:#0a1210;font-size:11px;font-weight:800;border-radius:8px;
   padding:1px 7px;min-width:9px;text-align:center}
-.repUndo{font-size:11.5px;color:var(--dim2);text-decoration:underline;padding:6px 2px}
 
 /* session */
 .sess{padding:10px 0 20px;min-height:calc(100vh - 200px);display:flex;flex-direction:column}
@@ -342,7 +340,7 @@ function notesHTML(a){
     ${had?`<div class="taf hd${on}" id="had-${a.id}"><div class="hbox">${had}</div></div>`:''}`;
 }
 function cardHTML(a,showSci){
-  const st=stage(a.id), reps=RC[a.id]||0;
+  const st=stage(a.id);
   return `<div class="card">
     <div class="toprow"><div style="flex:1">
       ${showSci?`<div class="tag" style="color:${SCIENCES[a.sci].c}">${esc(SCIENCES[a.sci].name)} · ${esc(a.topic)}</div>`:''}
@@ -353,11 +351,7 @@ function cardHTML(a,showSci){
     <div class="ar">${a.ar}</div>
     <div class="ref">${esc(a.ref)}</div>
     <div class="en">${esc(a.en)}</div>
-    ${notesHTML(a)}
-    <div class="repRow">
-      <button class="repBtn" data-rep="${a.id}">↻ Recited<span class="repCount">${reps}</span></button>
-      ${reps?`<button class="repUndo" data-repundo="${a.id}">undo</button>`:''}
-    </div></div>`;
+    ${notesHTML(a)}</div>`;
 }
 function bindCards(){
   el.querySelectorAll('[data-taf]').forEach(b=>b.onclick=()=>{
@@ -371,23 +365,6 @@ function bindCards(){
     if(i<0)BM.push(id); else BM.splice(i,1); sB();
     b.classList.toggle('on',i<0); b.textContent=i<0?'★':'☆'});
   el.querySelectorAll('.blank').forEach(b=>b.onclick=()=>b.classList.add('rev'));
-  el.querySelectorAll('[data-rep]').forEach(b=>b.onclick=()=>{
-    const id=b.dataset.rep, row=b.closest('.repRow');
-    RC[id]=(RC[id]||0)+1; sR();
-    row.querySelector('.repCount').textContent=RC[id];
-    if(!row.querySelector('[data-repundo]')){
-      const u=document.createElement('button'); u.className='repUndo'; u.dataset.repundo=id; u.textContent='undo';
-      row.appendChild(u); bindRepUndo(u);
-    }});
-  el.querySelectorAll('[data-repundo]').forEach(bindRepUndo);
-}
-function bindRepUndo(b){
-  b.onclick=()=>{
-    const id=b.dataset.repundo, row=b.closest('.repRow');
-    RC[id]=Math.max(0,(RC[id]||0)-1); sR();
-    row.querySelector('.repCount').textContent=RC[id];
-    if(!RC[id]) b.remove();
-  };
 }
 
 /* ---------------- render ---------------- */
@@ -627,11 +604,13 @@ function hifdhView(){
         <button class="r2" id="lock">Memorised ✓<small>send to murājaʿah</small></button></div>`
       :`<button class="bigbtn sec" id="show">Reveal to check</button>`;
   }
+  const reps=RC[a.id]||0;
   el.innerHTML=`<div class="sess">
     <div class="prog"><i style="width:${(ses.i/ses.queue.length)*100}%"></i></div>
     <div class="steps">${steps}</div>
     <div class="sesscard">
-      <div class="tag" style="color:${SCIENCES[a.sci].c}">${esc(SCIENCES[a.sci].name)} · ${esc(a.topic)}</div>
+      <div class="toprow"><div class="tag" style="color:${SCIENCES[a.sci].c}">${esc(SCIENCES[a.sci].name)} · ${esc(a.topic)}</div>
+        <button class="repBtn" id="rep">↻ Recited<span class="repCount">${reps}</span></button></div>
       <div class="stagelab">Stage ${st+1} of 4 — ${STAGES[st]}</div>
       <div class="qlab">Daleel for</div><div class="sessq">${esc(a.q)}</div>
       ${bodyHTML}
@@ -644,6 +623,7 @@ function hifdhView(){
   if(g('lock'))  g('lock').onclick =()=>{
     H[a.id]=4;sH(); P[a.id]={l:1,d:today()+1,n:0};sP();
     ses.done++;ses.i++;ses.sub=0;ses.rev=false;render()};
+  if(g('rep'))   g('rep').onclick  =()=>{RC[a.id]=(RC[a.id]||0)+1;sR();g('rep').querySelector('.repCount').textContent=RC[a.id]};
   bindCards();
 }
 
